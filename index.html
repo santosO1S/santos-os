@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="SANTOS OS — simulador hacker fictício em dispositivo virtual.">
+<title>Santos OS</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="fx glow anim">
+
+<!-- ============ DISPOSITIVO VIRTUAL ============ -->
+<div id="device">
+
+  <!-- Status bar (sempre visível) -->
+  <div id="statusbar">
+    <span id="sb-time">07:32</span>
+    <span id="sb-center"></span>
+    <span id="sb-right">
+      <span id="sb-signal">●●●</span>
+      <span id="sb-wifi">⌃</span>
+      <span id="sb-bat">🔋</span>
+    </span>
+  </div>
+
+  <!-- Tela de bloqueio -->
+  <div id="lockscreen" class="screen">
+    <div class="lock-time" id="lock-time">07:32</div>
+    <div class="lock-date" id="lock-date">Segunda-feira, 2 de novembro</div>
+    <div class="lock-hint">Código 1234 · ou Face ID</div>
+    <button type="button" id="face-btn" class="face-btn" aria-label="Face ID">👤</button>
+    <div id="face-box"></div>
+    <div class="lock-pad" id="lock-pad">
+      <div class="pin-dots" id="pin-dots"><span></span><span></span><span></span><span></span></div>
+      <div class="pin-grid">
+        <button data-pin="1">1</button><button data-pin="2">2</button><button data-pin="3">3</button>
+        <button data-pin="4">4</button><button data-pin="5">5</button><button data-pin="6">6</button>
+        <button data-pin="7">7</button><button data-pin="8">8</button><button data-pin="9">9</button>
+        <button data-pin="del" class="pin-del">⌫</button><button data-pin="0">0</button><button data-pin="ok" class="pin-ok">OK</button>
+      </div>
+      <p class="pin-msg" id="pin-msg">Código: 1234  ·  ou use Face ID</p>
+    </div>
+  </div>
+
+  <!-- Home screen -->
+  <div id="homescreen" class="screen">
+    <div class="home-bg"></div>
+    <div class="home-date" id="home-date">Segunda-feira, 2 de novembro</div>
+    <div class="app-grid" id="app-grid"></div>
+    <div class="dock" id="dock"></div>
+  </div>
+
+  <!-- App shell (conteúdo dos apps) -->
+  <div id="appshell" class="screen">
+    <div class="app-header">
+      <button id="app-back" aria-label="Voltar">‹</button>
+      <span id="app-title">App</span>
+      <button id="app-home" aria-label="Início">○</button>
+    </div>
+    <div class="app-body" id="app-body">
+      <div id="b-term" class="app-panel" hidden>
+        <div id="term" class="terminal" aria-live="polite"></div>
+        <form id="form"><span id="prompt">guest@lab:~$</span><input id="cmd" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="send" placeholder="digite help"><button type="submit">↵</button></form>
+        <div class="actions quick">
+          <button data-c="help">HELP</button>
+          <button data-c="scan">SCAN</button>
+          <button data-c="status">STATUS</button>
+          <button data-c="missions">MISSÕES</button>
+          <button data-c="contracts">CONTRATOS</button>
+          <button data-c="clear">CLEAR</button>
+        </div>
+      </div>
+      <div id="b-map" class="app-panel" hidden></div>
+      <div id="b-loc" class="app-panel" hidden></div>
+      <div id="b-mis" class="app-panel" hidden></div>
+      <div id="b-con" class="app-panel" hidden></div>
+      <div id="b-shop" class="app-panel" hidden></div>
+      <div id="b-pc" class="app-panel" hidden></div>
+      <div id="b-inv" class="app-panel" hidden></div>
+      <div id="b-files" class="app-panel" hidden></div>
+      <div id="b-web" class="app-panel" hidden></div>
+      <div id="b-rank" class="app-panel" hidden></div>
+      <div id="b-ach" class="app-panel" hidden></div>
+      <div id="b-skl" class="app-panel" hidden></div>
+      <div id="b-prof" class="app-panel" hidden></div>
+      <div id="b-set" class="app-panel" hidden></div>
+      <div id="b-chal" class="app-panel" hidden></div>
+      <div id="b-radar" class="app-panel" hidden></div>
+      <div id="b-city" class="app-panel" hidden></div>
+      <div id="b-calc" class="app-panel" hidden></div>
+      <div id="b-clock" class="app-panel" hidden></div>
+      <div id="b-notes" class="app-panel" hidden></div>
+      <div id="b-music" class="app-panel" hidden></div>
+      <div id="b-torch" class="app-panel" hidden></div>
+      <div id="b-photos" class="app-panel" hidden></div>
+      <div id="b-cal" class="app-panel" hidden></div>
+    </div>
+  </div>
+
+  <div id="home-indicator" aria-hidden="true"></div>
+</div>
+
+<!-- Overlays -->
+<div id="toast" role="status"></div>
+<div id="dlg" role="dialog" aria-modal="true">
+  <div class="box">
+    <div class="row"><h3></h3><button data-fn="dlgx" aria-label="Fechar">✕</button></div>
+    <div class="bd"></div>
+    <button data-fn="dlgx" class="dlg-ok">OK</button>
+  </div>
+</div>
+<div id="notif" role="dialog" aria-label="Notificações"></div>
+<div id="boot" class="out" aria-hidden="true"></div>
+
+<div id="auth" class="scr" role="dialog" aria-label="Login"><div class="scr-in" id="auth-body"></div></div>
+<div id="home" class="scr" role="dialog" aria-label="Tela inicial"><div class="scr-in" id="home-body"></div></div>
+
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/game.js"></script>
+<script src="js/challenges.js"></script>
+<script src="js/commands.js"></script>
+<script src="js/net.js"></script>
+<script src="js/rank.js"></script>
+<script src="js/radar.js"></script>
+<script src="js/city.js"></script>
+<script src="js/wm.js"></script>
+<script src="js/apps.js"></script>
+<script src="js/phone.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/music.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

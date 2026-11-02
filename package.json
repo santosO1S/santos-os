@@ -1,0 +1,9 @@
+{
+  "name": "santos-hacker-simulator",
+  "version": "0.3.11",
+  "private": true,
+  "description": "Simulador hacker fictício. Função de ranking online (Netlify).",
+  "dependencies": {
+    "@netlify/blobs": "^8.0.0"
+  }
+}

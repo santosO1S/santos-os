@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#040705">
+<title>Painel admin • SANTOS HACKER</title>
+<style>
+:root{--g:#5cff8f;--g2:#2fbf66;--m:#7f9c88;--line:#173424;--line2:#24553a;--r:#ff7b7b;--y:#e6ff8a;--bg:#040705;--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--font-ui:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(900px 600px at 80% 0%,rgba(92,255,143,.12),transparent 60%),radial-gradient(700px 500px at 0% 100%,rgba(47,191,102,.08),transparent 60%),var(--bg);color:#e2f3e8;font:14px/1.5 var(--font-ui)}
+button,input{font:inherit}
+button{background:linear-gradient(180deg,#132d1d,#0d2016);color:var(--g);border:1px solid var(--line2);border-radius:8px;padding:10px 14px;min-height:42px;font-weight:600;cursor:pointer}
+button:hover{border-color:var(--g2);box-shadow:0 0 16px rgba(92,255,143,.18)}
+button:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+button.primary{background:linear-gradient(180deg,var(--g),#37d86a);color:#03140a;border:0;box-shadow:0 0 18px rgba(92,255,143,.3)}
+button.danger{color:#ffb3b3;border-color:#5a2a2a;background:#1c0f0f}
+input{width:100%;background:#050a07;border:1px solid var(--line);border-radius:8px;color:#f2fff6;padding:11px 12px;min-height:44px;font-size:16px}
+input:focus{outline:none;border-color:var(--g2);box-shadow:0 0 0 3px rgba(92,255,143,.12)}
+[hidden]{display:none!important}
+
+/* tela de login (mesmo estilo da tela do operador) */
+.scr{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 18px}
+.card{width:100%;max-width:400px;background:linear-gradient(180deg,#0e1d14,#08120c);border:1px solid var(--line2);border-radius:16px;padding:28px 24px;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 40px rgba(92,255,143,.08);animation:pop .3s ease-out}
+@keyframes pop{from{opacity:0;transform:scale(.97) translateY(6px)}to{opacity:1;transform:none}}
+.brand{font-family:var(--font-mono);color:var(--g);font-size:18px;letter-spacing:1.5px;text-shadow:0 0 18px rgba(92,255,143,.35);text-align:center}
+.sub{color:var(--m);text-align:center;margin:6px 0 22px;font-size:13px;letter-spacing:.5px}
+.fcol{display:flex;flex-direction:column;gap:10px}
+.fcol button{width:100%}
+.err{color:var(--r);font-size:13px;text-align:center;min-height:20px;margin-top:12px}
+.note{color:var(--m);font-size:12px;text-align:center;margin-top:14px}
+
+/* painel */
+header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#07100b}
+h1{font:bold 14px var(--font-mono);color:var(--g);margin:0;letter-spacing:1.2px}
+main{padding:18px;max-width:1100px;margin:0 auto}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 16px}
+.stat{border:1px solid var(--line);background:#07100b;border-radius:10px;padding:10px 14px;min-width:130px}
+.stat b{display:block;color:var(--g);font:bold 20px var(--font-mono)}
+.stat small{color:var(--m)}
+.bar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.bar input{flex:1;min-width:200px}
+.wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#07100b}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--m);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+td.n{color:#fff;font-weight:600}
+.pill{display:inline-block;border:1px solid var(--g2);border-radius:999px;padding:1px 9px;font-size:12px;color:var(--g)}
+.pill.off{border-color:#3d4a42;color:var(--m)}
+.msg{color:var(--r);font-size:13px;min-height:20px;margin:8px 0}
+.foot{color:var(--m);font-size:12px;margin-top:12px}
+</style>
+</head>
+<body>
+
+<section id="login" class="scr">
+  <div class="card">
+    <div class="brand">▣ SANTOS HACKER SIMULATOR</div>
+    <p class="sub">PAINEL DO ADMINISTRADOR</p>
+    <form id="loginForm" class="fcol" autocomplete="on">
+      <input id="user" name="username" placeholder="usuário" autocapitalize="none" autocomplete="username" aria-label="Usuário">
+      <input id="pw" name="password" type="password" placeholder="senha" autocomplete="current-password" aria-label="Senha">
+      <button class="primary" type="submit">ENTRAR</button>
+    </form>
+    <div class="err" id="err1"></div>
+    <p class="note">Acesso restrito. Os dados são conferidos pelo servidor.</p>
+  </div>
+</section>
+
+<section id="panel" hidden>
+  <header>
+    <h1>▣ PAINEL ADMIN</h1>
+    <button id="out">SAIR</button>
+  </header>
+  <main>
+    <div class="stats">
+      <div class="stat"><small>Operadores</small><b id="s-total">0</b></div>
+      <div class="stat"><small>Ativos hoje</small><b id="s-today">0</b></div>
+      <div class="stat"><small>No ranking</small><b id="s-board">0</b></div>
+    </div>
+    <div class="bar">
+      <input id="q" placeholder="buscar operador pelo nome" aria-label="Buscar">
+      <button id="refresh">ATUALIZAR</button>
+    </div>
+    <div class="msg" id="err2"></div>
+    <div class="wrap">
+      <table>
+        <thead><tr><th>Operador</th><th>Nível</th><th>Pontuação</th><th>Criado em</th><th>Último acesso</th><th>Ranking</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="foot">Atualiza sozinho a cada 30 segundos. Apagar remove o operador e a pontuação do servidor; o progresso no aparelho dele não muda.</p>
+  </main>
+</section>
+
+<script>
+(function(){
+  let auth='';let timer=null;let all=[];
+  const $=q=>document.querySelector(q);
+  const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt=t=>t?new Date(t).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'—';
+  const fmtN=n=>Number(n||0).toLocaleString('pt-BR');
+  function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+  async function api(opt){const r=await fetch('/api/admin',Object.assign({headers:{Authorization:'Basic '+auth,'Content-Type':'application/json'},cache:'no-store'},opt||{}));
+    if(r.status===401){const e=new Error('auth');throw e}
+    if(!r.ok)throw new Error('erro '+r.status);return r.json()}
+  function render(){const q=($('#q').value||'').toLowerCase().trim();
+    const list=all.filter(p=>!q||String(p.n||'').toLowerCase().includes(q));
+    const today=new Date().toDateString();
+    $('#s-total').textContent=fmtN(all.length);
+    $('#s-today').textContent=fmtN(all.filter(p=>p.last&&new Date(p.last).toDateString()===today).length);
+    $('#s-board').textContent=fmtN(all.filter(p=>p.inBoard).length);
+    $('#rows').innerHTML=list.map(p=>`<tr><td class="n">${esc(p.n||'—')}</td><td>${esc(p.lv||1)}</td><td>${fmtN(p.sc)}</td><td>${fmt(p.created)}</td><td>${fmt(p.last)}</td><td><span class="pill ${p.inBoard?'':'off'}">${p.inBoard?'sim':'não'}</span></td><td><button class="danger" data-del="${esc(p.pid)}" data-n="${esc(p.n||'')}">APAGAR</button></td></tr>`).join('')||'<tr><td colspan="7" style="color:var(--m)">Nenhum operador encontrado.</td></tr>'}
+  async function load(){try{const j=await api();all=j.players||[];$('#err2').textContent='';render();$('#login').hidden=true;$('#panel').hidden=false;start()}
+    catch(e){if(e.message==='auth'){logout(true)}else{$('#err2').textContent='Não foi possível carregar: '+e.message}}}
+  function start(){stop();timer=setInterval(load,30000)} function stop(){clearInterval(timer);timer=null}
+  function logout(msg){auth='';stop();$('#panel').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#err1').textContent=msg?'Usuário ou senha incorretos.':''}
+  $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();
+    const u=$('#user').value.trim(),p=$('#pw').value;if(!u||!p){$('#err1').textContent='Preencha usuário e senha.';return}
+    auth=b64(u+':'+p);$('#err1').textContent='Entrando…';
+    try{const j=await api();all=j.players||[];$('#err1').textContent='';render();$('#login').hidden=true;$('#panel').hidden=false;start()}
+    catch(err){auth='';$('#err1').textContent=err.message==='auth'?'Usuário ou senha incorretos.':'Não foi possível conectar. Tente de novo.'}});
+  $('#refresh').onclick=load;$('#q').oninput=render;$('#out').onclick=()=>logout(false);
+  $('#rows').onclick=async e=>{const b=e.target.closest('[data-del]');if(!b)return;
+    if(!confirm('Apagar o operador "'+b.dataset.n+'" e a pontuação dele no servidor?'))return;
+    try{await api({method:'POST',body:JSON.stringify({action:'delete',pid:b.dataset.del})});await load()}catch(err){$('#err2').textContent='Não foi possível apagar: '+err.message}};
+})();
+</script>
+</body>
+</html>
